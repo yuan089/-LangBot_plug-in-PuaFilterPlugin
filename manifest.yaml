@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Plugin
+metadata:
+  name: PuaFilterPlugin
+  version: 0.1.0
+  author: Aisin_Lychee
+  description:
+    en_US: Intercept, fix format bleeding, and delay send.
+    zh_Hans: PUA 修正回覆、攔截格式錯誤與延遲分段發送
+  label:
+    en_US: PUA Filter
+    zh_Hans: PUA 修正與分段發送
+  icon: assets/icon.svg
+spec:
+  config:
+    - name: rewrite_notice
+      type: string
+      label:
+        en_US: Rewrite Notice
+        zh_Hans: 重寫提醒文案
+      description:
+        en_US: Message to show when rewriting
+        zh_Hans: 觸發重寫或攔截時，發送給使用者的自訂提醒。
+      default: "⚠️ [系統提示] 檢測到人格偏移或格式錯誤，正在對 AI 進行 PUA 修正中..."
+      required: true
+    - name: delay_time
+      type: number
+      label:
+        en_US: Delay Time (Seconds)
+        zh_Hans: 分段延遲時間 (秒)
+      description:
+        en_US: Sleep time between paragraphs
+        zh_Hans: 每一段文字發送間隔的秒數，建議 0.5 ~ 1.5 秒。
+      default: 0.8
+      required: true
+  components:
+    EventListener:
+      fromDirs:
+        - path: components/event_listener/
+execution:
+  python:
+    path: main.py
+    attr: PuaFilterPlugin
